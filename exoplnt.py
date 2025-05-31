@@ -4,18 +4,21 @@ import requests
 import os
 
 DATA_PATH = "exoplanets.csv"
-API_KEY = "zcbUROJOQKFXPRiZPXfqsYWmhv1DRzJYMhf7wYxypython -m streamlit run exoatlas.py"  # <-- Put your NASA API key here!
+# Replace this with your NASA API key if you have one, else you can use 'DEMO_KEY'
+API_KEY = "DEMO_KEY"
+
+# Google Drive direct download link (converted)
+GDRIVE_URL = "https://drive.google.com/uc?export=download&id=1BE7fiNsFyyq2eHHY-wzQlvNHsBGvgSV0"
 
 def download_data():
-    url = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select+*+from+ps&format=csv"
     if not os.path.exists(DATA_PATH):
-        response = requests.get(url)
+        response = requests.get(GDRIVE_URL)
         if response.status_code == 200:
             with open(DATA_PATH, "wb") as f:
                 f.write(response.content)
-            st.success("✅ NASA Exoplanet data downloaded!")
+            st.success("✅ Exoplanet data downloaded from Google Drive!")
         else:
-            st.error("❌ Failed to download exoplanet data")
+            st.error("❌ Failed to download exoplanet data from Google Drive.")
     else:
         st.info("📁 Data file found locally.")
 
@@ -55,11 +58,11 @@ def main():
             st.subheader(apod_data.get("title", ""))
             st.write(f"*Date: {apod_data.get('date', '')}*")
             st.image(apod_data.get("url", ""), caption=apod_data.get("explanation", ""), use_column_width=True)
-    
+
     # --- Exoplanet Explorer Section ---
     st.markdown("---")
     st.markdown("### Explore real NASA exoplanets and filter them based on size, temperature, and distance.")
-    
+
     download_data()
     df = load_and_process_data()
 
@@ -79,4 +82,11 @@ def main():
     st.dataframe(filtered, use_container_width=True)
 
     if st.button("🎲 Surprise Me"):
-        sample = filtered.sampl
+        if not filtered.empty:
+            sample = filtered.sample(n=1)
+            st.write(sample)
+        else:
+            st.info("No planets match the filter criteria.")
+
+if __name__ == "__main__":
+    main()
