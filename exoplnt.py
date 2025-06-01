@@ -5,7 +5,7 @@ import os
 
 DATA_PATH = "exoplanets.csv"
 # Replace this with your NASA API key if you have one, else you can use 'DEMO_KEY'
-API_KEY = "DEMO_KEY"
+API_KEY = "zcbUROJOQKFXPRiZPXfqsYWmhv1DRzJYMhf7wYxy"
 
 # Google Drive direct download link (converted)
 GDRIVE_URL = "https://drive.google.com/uc?export=download&id=1BE7fiNsFyyq2eHHY-wzQlvNHsBGvgSV0"
